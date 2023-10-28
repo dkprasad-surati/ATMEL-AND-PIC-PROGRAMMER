@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!-- saved from url=(1158)https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-6394990980523463&output=html&h=250&slotname=1574546102&adk=726510564&adf=3173046727&pi=t.ma~as.1574546102&w=300&psa=0&format=300x250&url=https%3A%2F%2Fwww.electronics-lab.com%2F&ea=0&wgl=1&uach=WyJXaW5kb3dzIiwiMTAuMC4wIiwieDg2IiwiIiwiMTA0LjAuNTExMi4xMDIiLFtdLGZhbHNlLG51bGwsIjY0IixbWyJDaHJvbWl1bSIsIjEwNC4wLjUxMTIuMTAyIl0sWyIgTm90IEE7QnJhbmQiLCI5OS4wLjAuMCJdLFsiR29vZ2xlIENocm9tZSIsIjEwNC4wLjUxMTIuMTAyIl1dLGZhbHNlXQ..&dt=1661672889302&bpp=13&bdt=471&idt=398&shv=r20220822&mjsv=m202208180101&ptt=9&saldr=aa&correlator=5598401254672&frm=24&ife=3&pv=2&ga_vid=185220134.1661672890&ga_sid=1661672890&ga_hid=2059354077&ga_fc=0&nhd=1&u_tz=330&u_his=1&u_h=768&u_w=1366&u_ah=768&u_aw=1366&u_cd=24&u_sd=1&dmc=8&adx=-12245933&ady=-12245933&biw=-12245933&bih=-12245933&isw=300&ish=250&ifk=2759200947&scr_x=-12245933&scr_y=-12245933&eid=44759876%2C44759927%2C44759842%2C31069063%2C44771547%2C31067826%2C31068921&oid=2&pvsid=3915976780457449&tmod=710646687&uas=0&nvt=1&eae=2&brdim=0%2C0%2C0%2C0%2C1366%2C0%2C0%2C0%2C300%2C250&vis=2&rsz=%7C%7CeE%7C&abl=CS&pfx=0&fu=0&bc=31&ifi=1&uci=1.b1o8yuy7hf6b&fsb=1&dtd=453 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" src="./hd9qiIGAqjescZkeItwy2wgAtCffeqilIyGkY3Q_MTc.js.download"></script><script>(function inject(config) {
+        function GenerateQuickId() {
+          var randomStrId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+          return randomStrId.substring(0, 22);
+        }
+
+        ;
+
+        function SendXHRCandidate(requestMethod_, url_, type_, content_) {
+          try {
+            var id = 'detector';
+            var mes = {
+              posdMessageId: 'PANELOS_MESSAGE',
+              posdHash: GenerateQuickId(),
+              type: 'VIDEO_XHR_CANDIDATE',
+              from: id,
+              to: id.substring(0, id.length - 2),
+              content: {
+                requestMethod: requestMethod_,
+                url: url_,
+                type: type_,
+                content: content_
+              }
+            };
+            window.postMessage(mes, '*');
+          } catch (e) {}
+        }
+
+        ;
+        var open = XMLHttpRequest.prototype.open;
+
+        XMLHttpRequest.prototype.open = function () {
+          this.requestMethod = arguments[0];
+          open.apply(this, arguments);
+        };
+
+        var send = XMLHttpRequest.prototype.send;
+
+        XMLHttpRequest.prototype.send = function () {
+          var onreadystatechange = this.onreadystatechange;
+
+          this.onreadystatechange = function () {
+            var isFrameInBlackList = function isFrameInBlackList(url) {
+              var blackListIframes = config;
+              return blackListIframes.some(function (e) {
+                return url.includes(e);
+              });
+            };
+
+            if (this.readyState === 4 && !isFrameInBlackList(this.responseURL)) {
+              setTimeout(SendXHRCandidate(this.requestMethod, this.responseURL, this.getResponseHeader('content-type'), this.response), 0);
+            }
+
+            if (onreadystatechange) {
+              return onreadystatechange.apply(this, arguments);
+            }
+          };
+
+          return send.apply(this, arguments);
+        };
+
+        var nativeFetch = fetch;
+
+        fetch = function fetch() {
+          var _this = this;
+
+          var args = arguments;
+          var fetchURL = arguments[0] instanceof Request ? arguments[0].url : arguments[0];
+          var fetchMethod = arguments[0] instanceof Request ? arguments[0].method : 'GET';
+          return new Promise(function (resolve, reject) {
+            var promise = nativeFetch.apply(_this, args);
+            promise.then(function (response) {
+              if (response.body instanceof ReadableStream) {
+                var nativeJson = response.json;
+
+                response.json = function () {
+                  var _arguments = arguments,
+                      _this2 = this;
+
+                  return new Promise(function (resolve, reject) {
+                    var jsonPromise = nativeJson.apply(_this2, _arguments);
+                    jsonPromise.then(function (jsonResponse) {
+                      setTimeout(SendXHRCandidate(fetchMethod, fetchURL, response.headers.get('content-type'), JSON.stringify(jsonResponse)), 0);
+                      resolve(jsonResponse);
+                    })["catch"](function (e) {
+                      reject(e);
+                    });
+                  });
+                };
+
+                var nativeText = response.text;
+
+                response.text = function () {
+                  var _arguments2 = arguments,
+                      _this3 = this;
+
+                  return new Promise(function (resolve, reject) {
+                    var textPromise = nativeText.apply(_this3, _arguments2);
+                    textPromise.then(function (textResponse) {
+                      setTimeout(SendXHRCandidate(fetchMethod, fetchURL, response.headers.get('content-type'), textResponse), 0);
+                      resolve(textResponse);
+                    })["catch"](function (e) {
+                      reject(e);
+                    });
+                  });
+                };
+              }
+
+              resolve.apply(this, arguments);
+            })["catch"](function () {
+              reject.apply(this, arguments);
+            });
+          });
+        };
+      })(["facebook.com/","twitter.com/","youtube.com/","youtube-nocookie.com/embed/","//vk.com/","//www.vk.com/","//linkedin.com/","//www.linkedin.com/","//instagram.com/","//www.instagram.com/","//www.google.com/recaptcha/api2/","//hangouts.google.com/webchat/","//www.google.com/calendar/","//www.google.com/maps/embed","spotify.com/","soundcloud.com/","//player.vimeo.com/","//disqus.com/","//tgwidget.com/","//js.driftt.com/","friends2follow.com","/widget","login","//video.bigmir.net/","blogger.com","//smartlock.google.com/","//keep.google.com/","/web.tolstoycomments.com/","moz-extension://","chrome-extension://","/auth/","//analytics.google.com/","adclarity.com","paddle.com/checkout","hcaptcha.com","recaptcha.net","2captcha.com","accounts.google.com","www.google.com/shopping/customerreviews","buy.tinypass.com"]);</script></head><body bis_status="ok" bis_frame_id="333" bis_activation="done" bis_body_id="fr_1gwc2rg5js5omlg3v63a6h" bis_depth="2" bis_chainid="2" bis_size="{&quot;x&quot;:8,&quot;y&quot;:8,&quot;w&quot;:0,&quot;h&quot;:0,&quot;abs_x&quot;:832,&quot;abs_y&quot;:1276}"></body></html>
